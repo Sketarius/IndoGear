@@ -28,6 +28,21 @@
 			$this->favicon_url = $url;
 		}
 
+		/*
+		*   Arguments are "overloaded"
+		*	function displayImage($alt, $src, $className, $idName)
+		*/
+		public function displayImage() {
+			$arg_num = func_num_args();
+			if ($arg_num > 3) {
+				echo "<img alt=\"" . func_get_arg(0) . "\" src=\"" . func_get_arg(1) . "\" class=\"" . func_get_arg(2) . "\" id=\"" . func_get_arg(3) . "\" />";
+			} else if ($arg_num > 2) {
+				echo "<img alt=\"" . func_get_arg(0) . "\" src=\"" . func_get_arg(1) . "\" class=\"" . func_get_arg(2) . "\" />";
+			} else { 
+				echo "<img alt=\"" . func_get_arg(0) . "\" src=\"" . func_get_arg(1) . "\" />";
+			}
+		}
+
 		public function displayHeader() {
 			echo "<!DOCTYPE html>\n";
 			echo "<html>\n";
@@ -117,7 +132,7 @@
 			echo "		<tr>\n";
 			echo "			<td>Username: </td>\n";
 			echo "			<td>\n";
-			$this->inputItem($username_id, "text", "");
+			$this->inputItem($username_id, "text", "", false);
 			echo "			</td>\n";
 			if($horizontal == false) {
 				echo "		</tr>\n";
@@ -125,7 +140,7 @@
 			}			
 			echo "			<td>Password: </td>\n";
 			echo "			<td>\n";
-			$this->inputItem($password_id, "password", "");
+			$this->inputItem($password_id, "password", "", false);
 			echo "			</td>\n";
 			echo "		</tr>\n";
 			if($horizontal == false) {
@@ -134,7 +149,7 @@
 				echo "		<td></td>";
 			}
 			echo "	<td>\n";
-			$this->inputItem("submit", "submit", "Login");
+			$this->inputItem("submit", "submit", "Login", false);
 			echo "	</td>\n";
 			echo "</tr>\n";	
 			echo "	</table>\n";
