@@ -55,6 +55,38 @@
 
 			return $ret;
 		}
+
+		public function selectQuery($columns, $table, $where) {
+			$arg_num = func_num_args();
+			$method = null;
+			// If we have more than 3 arguments, method specified.
+			if($arg_num > 3) {
+				$method = func_get_arg(3);
+			}
+
+			$this->connect();
+			if ($result = $this->conn->query("SELECT $columns FROM $table WHERE $where")) {
+				$rows = array();
+
+				// Fetch rows
+				while($row = $result->fetch_assoc()) {
+					$rows[] = $row;
+				}
+
+				// JSON response
+				if ($method === 'json') {
+					$ret = json_encode($rows);
+				// Other than JSON
+				} else {
+					$ret = $rows;
+				}
+			} else {
+				echo $this->conn->error;
+			}
+			$this->close();
+
+			return $ret;
+		}
 		
 	}
 ?>
