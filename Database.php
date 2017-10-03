@@ -88,5 +88,12 @@
 			return $ret;
 		}
 		
+		public function escapeString($string) {
+			$this->connect();
+			$escaped = $this->conn->real_escape_string($string);
+			$this->close();
+			return $escaped;
+		}
+		
 	}
 ?>
