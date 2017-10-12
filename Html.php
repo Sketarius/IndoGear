@@ -43,9 +43,23 @@
 			}
 		}
 
+		/*
+		*   Arguments are "overloaded"
+		*	function displayHeader($ngapp, $ngcontroller)
+		*/
 		public function displayHeader() {
+			$arg_num = func_num_args();
+
 			echo "<!DOCTYPE html>\n";
-			echo "<html>\n";
+			if($arg_num > 0) {
+				$ngapp = func_get_arg(0);
+				echo "<html ng-app=\"$ngapp\"";
+				if($arg_num > 1) {
+					$ngcontroller = func_get_arg(1);
+					echo " ng-controller=\"$ngcontroller\"";
+				}
+				echo ">\n";
+			} else 	echo "<html>\n";
 			echo "<head> <title>" . $this->pageTitle . "</title>\n";
 
 			if(sizeof($this->css) > 0) {
