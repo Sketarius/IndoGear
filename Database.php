@@ -56,18 +56,21 @@
 			return $ret;
 		}
 
-		public function selectQuery($columns, $table, $where) {
+		public function selectQuery($columns, $table, $where='', $sort='') {
 			$arg_num = func_num_args();
 			$method = null;
 			$ret = null;
 
-			// If we have more than 3 arguments, method specified.
+			// If we have more than 4 arguments, method specified.
+			// (Starting from 0)
 			if($arg_num > 3) {
-				$method = func_get_arg(3);
+				$method = func_get_arg(4);
 			}
 
 			$this->connect();
-			if ($result = $this->conn->query("SELECT $columns FROM $table WHERE $where")) {
+			$qry = sprintf("SELECT $columns FROM $table %s %s", (strlen($where) > 0)?"WHERE " . $where : "", (strlen($sort) > 0)? $sort : "");
+
+			if ($result = $this->conn->query($qry)) {
 				$rows = array();
 
 				// Fetch rows
@@ -76,7 +79,7 @@
 				}
 
 				// JSON response
-				if ($method === 'json') {
+				if (strcmp($method,'json') == 0) {
 					$ret = json_encode($rows);
 				// Other than JSON
 				} else {
